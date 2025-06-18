@@ -1,7 +1,7 @@
 #include "application.h"
 
 Application::Application()
-    : m_NullScreen(), m_CurrentScreen(&m_NullScreen)
+    : m_NullScreen(), m_MainScreen(&m_NullScreen), m_CurrentScreen(&m_MainScreen)
 {
     constexpr int width = 1280;
     constexpr int height = 720;

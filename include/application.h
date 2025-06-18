@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include "graphics/screen.h"
 #include "graphics/null_screen.h"
+#include "graphics/main_screen.h"
 
 class Application
 {
@@ -14,6 +15,7 @@ public:
     ~Application();
 
 private:
-    Screen *m_CurrentScreen;
     NullScreen m_NullScreen;
+    MainScreen m_MainScreen;
+    Screen *m_CurrentScreen;
 };
