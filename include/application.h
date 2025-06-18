@@ -4,9 +4,14 @@
 #include "graphics/screen.h"
 #include "graphics/null_screen.h"
 #include "graphics/main_screen.h"
+#include "graphics/start_screen.h"
 
 class Application
 {
+private:
+    void Update();
+    void Render();
+    
 public:
     Application();
 
@@ -15,7 +20,6 @@ public:
     ~Application();
 
 private:
-    NullScreen m_NullScreen;
-    MainScreen m_MainScreen;
+    StartScreen m_StartScreen;
     Screen *m_CurrentScreen;
 };
