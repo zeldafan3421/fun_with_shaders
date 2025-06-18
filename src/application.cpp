@@ -1,10 +1,11 @@
 #include "application.h"
 
 Application::Application()
+    : m_NullScreen(), m_CurrentScreen(&m_NullScreen)
 {
     constexpr int width = 1280;
     constexpr int height = 720;
-    constexpr char title[] = "Fun with Shaders"; 
+    constexpr char title[] = "Fun with Shaders";
 
     InitWindow(width, height, title);
 }
@@ -13,8 +14,16 @@ void Application::Run()
 {
     while (!WindowShouldClose())
     {
+        if (m_CurrentScreen->IsScreenFinished())
+        {
+            m_CurrentScreen = m_CurrentScreen->GetNextScreen();
+        }
+
+        m_CurrentScreen->Update();
+
         BeginDrawing();
-            ClearBackground(RAYWHITE);
+        ClearBackground(RAYWHITE);
+        m_CurrentScreen->Draw();
         EndDrawing();
     }
 }
