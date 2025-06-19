@@ -9,6 +9,7 @@ void StartScreen::Update()
 {
     if (IsKeyPressed(KEY_ENTER))
     {
+        m_MainScreen.LoadScreenData(1.0f);
         m_Finished = true;
     }
 }

@@ -4,6 +4,8 @@
 #include "raymath.h"
 #include "screen.h"
 #include "null_screen.h"
+#include <vector>
+#include "../resource_dir.h"
 
 constexpr float c_CameraDist = 4.0f;
 constexpr Vector3 c_CameraUp = Vector3{0.0f, 1.0f, 0.0f};
@@ -34,9 +36,19 @@ class MainScreen : public Screen
 public:
     MainScreen();
 
+    void LoadScreenData(const float c_SideLength);
+
     virtual void Update();
     virtual void Draw();
+
+    ~MainScreen();
 private:
     Camera m_Camera;
+
+    Mesh m_CubeMesh;
+    Material m_InstancingMaterial;
+    Shader m_InstancingShader;
+    std::vector<Matrix> m_Transforms;
+
     NullScreen m_NullScreen;
 };
