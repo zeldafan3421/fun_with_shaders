@@ -14,7 +14,7 @@ constexpr Vector3 ConstVector3Scale(Vector3 v, float scalar)
     Vector3 result = { v.x*scalar, v.y*scalar, v.z*scalar };
 
     return result;
-}
+} 
 
 static constexpr Camera GetCameraDefaultSettings()
 {
