@@ -13,10 +13,10 @@ constexpr float c_CameraFovy = 45.0f;
 
 constexpr Vector3 ConstVector3Scale(Vector3 v, float scalar)
 {
-    Vector3 result = { v.x*scalar, v.y*scalar, v.z*scalar };
+    Vector3 result = {v.x * scalar, v.y * scalar, v.z * scalar};
 
     return result;
-} 
+}
 
 static constexpr Camera GetCameraDefaultSettings()
 {
@@ -42,6 +42,7 @@ public:
     virtual void Draw();
 
     ~MainScreen();
+
 private:
     Camera m_Camera;
 
