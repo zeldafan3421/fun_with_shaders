@@ -44,12 +44,19 @@ void MainScreen::Update()
 
 void MainScreen::Draw()
 {
+    constexpr float c_GridSpacing = 1.0f;
+    constexpr int c_GridSlices = 10;
+
     BeginMode3D(m_Camera);
+<<<<<<< HEAD
     DrawGrid(10, 1.0f);
 
     DrawMeshInstanced(
         m_CubeMesh, m_InstancingMaterial, m_Transforms.data(), m_Transforms.size()
     );
+=======
+    DrawGrid(c_GridSlices, c_GridSpacing);
+>>>>>>> 6119b77be2f75359baeca005f75acd503f3b7444
     EndMode3D();
 }
 
