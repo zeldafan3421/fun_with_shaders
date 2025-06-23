@@ -1,22 +1,15 @@
 #include "application.h"
 
-Application::Application()
-    : m_StartScreen(), m_CurrentScreen(&m_StartScreen)
+Application::Application():   
+    m_WindowContext(1280, 720, "Fun with Shaders"), 
+    m_CurrentScreen(std::make_unique<StartScreen>())
 {
-    constexpr int width = 1280;
-    constexpr int height = 720;
-    constexpr char title[] = "Fun with Shaders";
-
-    InitWindow(width, height, title);
-
-#if defined(DEBUG)
-    SetTraceLogLevel(LOG_ALL);
-    TraceLog(LOG_DEBUG, "Debug application running.");
-#endif
+    TraceLog(LOG_DEBUG, "Constructing application.");
 }
 
 void Application::Run()
 {
+    TraceLog(LOG_DEBUG, "Running application.");
     while (!WindowShouldClose())
     {
         Update();
@@ -28,7 +21,9 @@ void Application::Update()
 {
     if (m_CurrentScreen->IsScreenFinished())
     {
-        m_CurrentScreen = m_CurrentScreen->GetNextScreen();
+        TraceLog(LOG_DEBUG, "Changing screen.");
+
+        m_CurrentScreen = std::move(m_CurrentScreen->GetNextScreen());
     }
 
     m_CurrentScreen->Update();
@@ -39,13 +34,16 @@ void Application::Render()
     BeginDrawing();
     ClearBackground(RAYWHITE);
     m_CurrentScreen->Draw();
-#if defined(DEBUG)
-    DrawFPS(10, 10);
-#endif
     EndDrawing();
 }
 
-Application::~Application()
+Application::WindowContext::WindowContext(int _width, int _height, const std::string &_title)
+{
+    InitWindow(_width, _height, _title.c_str());
+    SearchAndSetResourceDir("resources");
+}
+
+Application::WindowContext::~WindowContext()
 {
     CloseWindow();
 }

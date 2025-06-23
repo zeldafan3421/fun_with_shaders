@@ -1,11 +1,11 @@
 #pragma once
 
-#include "screen.h"
+#include "interfaces/screen.h"
 
 class NullScreen : public Screen
 {
 public:
-    NullScreen() : Screen(*this) {}
+    NullScreen() : Screen(nullptr) {}
 
     virtual void Update() {}
     virtual void Draw() {}

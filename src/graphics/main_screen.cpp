@@ -1,45 +1,51 @@
 #include "graphics/main_screen.h"
 
 MainScreen::MainScreen()
-    : Screen(m_NullScreen),
-      m_Camera(GetCameraDefaultSettings())
-{
-    constexpr float c_SideLength = 1.0f;
-    SearchAndSetResourceDir("resources");
-}
+    : Screen(std::make_unique<NullScreen>()),
+    m_Camera(GetCameraDefaultSettings()),
+    m_Cube(GenDefaultCube()),
+    m_Sphere(GenMeshSphere(1.0f, 10, 10)),
+    m_CubeInstances(),
+    m_SphereInstances()
+{  
+    TraceLog(LOG_DEBUG, "Loading main screen.");
+    TraceLog(LOG_DEBUG, "Main Screen size : %llu bytes", sizeof(*this));
 
-void MainScreen::LoadScreenData(const float c_SideLength)
-{
-    m_CubeMesh = GenMeshCube(c_SideLength, c_SideLength, c_SideLength);
-
-    m_InstancingMaterial = LoadMaterialDefault();
-    m_InstancingMaterial.maps[MATERIAL_MAP_ALBEDO].color = BLUE;
-    m_InstancingShader = LoadShader("shader.vs", "shader.fs");
-    m_InstancingMaterial.shader = m_InstancingShader;
-
-    constexpr int transformCount = 1000;
-    m_Transforms.reserve(transformCount);
-
-    for (int i = 0; i < transformCount; i++)
+    class : public Builder<Matrix>
     {
-        Vector3 rand = {
-            ((float)GetRandomValue(-500, 500)) / 10.0f,
-            ((float)GetRandomValue(-500, 500)) / 10.0f,
-            ((float)GetRandomValue(-500, 500)) / 10.0f,
-        };
+    public:
+        Matrix Build() override
+        {
+            return m_Current;
+        }
 
-        m_Transforms.push_back(MatrixTranslate(rand.x, rand.y, rand.z));
-    }
+        void Reset() override
+        {
+            m_Current = MatrixIdentity();
+            m_Current *= MatrixTranslate(
+                Random::GetRandomFloat(5.0f),
+                Random::GetRandomFloat(5.0f),
+                Random::GetRandomFloat(5.0f)
+            );
+        }
+    private:
+        Matrix m_Current;
+    } m_Builder;
 
+    m_CubeInstances = Instances(
+        c_InstanceCount, 
+        m_Cube, 
+        m_Builder
+    );
+
+    m_Cube.SetMaterialColor(BLUE);
+    m_Sphere.SetMaterialColor(PINK);
 }
+
 void MainScreen::Update()
 {
-    int timeLoc = GetShaderLocation(m_InstancingShader, "time");
-
-    float time =  (float)GetTime();
-    SetShaderValue(m_InstancingShader, timeLoc, &time, SHADER_UNIFORM_FLOAT);
-
-    UpdateCamera(&m_Camera, CAMERA_ORBITAL);
+    m_CubeInstances.Update();
+    UpdateCamera(&m_Camera, CAMERA_FREE);
 }
 
 void MainScreen::Draw()
@@ -48,17 +54,18 @@ void MainScreen::Draw()
     constexpr int c_GridSlices = 10;
 
     BeginMode3D(m_Camera);
-    DrawGrid(10, 1.0f);
-
-    DrawMeshInstanced(
-        m_CubeMesh, m_InstancingMaterial, m_Transforms.data(), m_Transforms.size()
-    );
-    DrawGrid(c_GridSlices, c_GridSpacing);
+        DrawGrid(10, 1.0f);
+        m_CubeInstances.Draw();
+        m_SphereInstances.Draw();
+        DrawGrid(c_GridSlices, c_GridSpacing);
     EndMode3D();
+
+#if defined(DEBUG)
+    DrawFPS(10, 10);
+#endif
 }
 
 MainScreen::~MainScreen()
 {
-    UnloadMesh(m_CubeMesh);
-    UnloadMaterial(m_InstancingMaterial);
+    TraceLog(LOG_DEBUG, "Unloading main screen.");
 }

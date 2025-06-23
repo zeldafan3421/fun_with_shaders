@@ -16,8 +16,5 @@ void main()
 
     mat4 mvpi = mvp*instanceTransform;
 
-    vec3 modifiedPosition = vertexPosition;
-    modifiedPosition.y += vertexPosition.y * sin(time)/cos(time);
-
-    gl_Position = mvpi*vec4(modifiedPosition, 1.0);
+    gl_Position = mvpi*vec4(vertexPosition, 1.0);
 }
