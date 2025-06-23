@@ -2,7 +2,7 @@
 
 Application::Application():   
     m_WindowContext(1280, 720, "Fun with Shaders"), 
-    m_CurrentScreen(std::make_unique<StartScreen>())
+    m_CurrentScreen(StartScreen::Create())
 {
     TraceLog(LOG_DEBUG, "Constructing application.");
 }

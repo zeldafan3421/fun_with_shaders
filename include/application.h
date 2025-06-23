@@ -5,6 +5,7 @@
 #include "graphics/null_screen.h"
 #include "graphics/main_screen.h"
 #include "graphics/start_screen.h"
+#include "resource_dir.h"
 #include <string>
 
 

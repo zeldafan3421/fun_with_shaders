@@ -13,11 +13,13 @@ public:
 
     virtual void Update();
     virtual void Draw();
+
+    static std::unique_ptr<Screen> Create();
  
     ~StartScreen();
 private:
     KeyboardKey m_ContinueKey;
-    
+
     Vector2 m_TextPosition;
     int m_TextFontSize;
     Color m_TextColor;

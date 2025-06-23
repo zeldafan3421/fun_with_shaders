@@ -9,4 +9,9 @@ public:
 
     virtual void Update() {}
     virtual void Draw() {}
+
+    static std::unique_ptr<Screen> Create()
+    {
+        return std::make_unique<NullScreen>();
+    }
 };

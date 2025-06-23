@@ -1,7 +1,7 @@
 #include "graphics/start_screen.h"
 
 StartScreen::StartScreen()
-    : Screen(std::make_unique<MainScreen>()), 
+    : Screen(MainScreen::Create()), 
     m_ContinueKey(KEY_ENTER),
     m_TextPosition{20.0f, 20.0f},
     m_TextFontSize(30),
@@ -29,6 +29,11 @@ void StartScreen::Draw()
         m_TextFontSize, 
         m_TextColor
     );
+}
+
+std::unique_ptr<Screen> StartScreen::Create()
+{
+    return std::make_unique<StartScreen>();
 }
 
 StartScreen::~StartScreen()

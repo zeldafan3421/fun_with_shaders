@@ -1,42 +1,13 @@
 #include "graphics/main_screen.h"
 
 MainScreen::MainScreen()
-    : Screen(std::make_unique<NullScreen>()),
+    : Screen(NullScreen::Create()),
     m_Camera(GetCameraDefaultSettings()),
-    m_Cube(GenDefaultCube()),
-    m_Sphere(GenMeshSphere(1.0f, 10, 10)),
-    m_CubeInstances(),
-    m_SphereInstances()
+    m_Cube(InstanceObject::CubeObject(c_InstanceCount)),
+    m_Sphere(InstanceObject::SphereObject(c_InstanceCount))
 {  
     TraceLog(LOG_DEBUG, "Loading main screen.");
     TraceLog(LOG_DEBUG, "Main Screen size : %llu bytes", sizeof(*this));
-
-    class : public Builder<Matrix>
-    {
-    public:
-        Matrix Build() override
-        {
-            return m_Current;
-        }
-
-        void Reset() override
-        {
-            m_Current = MatrixIdentity();
-            m_Current *= MatrixTranslate(
-                Random::GetRandomFloat(5.0f),
-                Random::GetRandomFloat(5.0f),
-                Random::GetRandomFloat(5.0f)
-            );
-        }
-    private:
-        Matrix m_Current;
-    } m_Builder;
-
-    m_CubeInstances = Instances(
-        c_InstanceCount, 
-        m_Cube, 
-        m_Builder
-    );
 
     m_Cube.SetMaterialColor(BLUE);
     m_Sphere.SetMaterialColor(PINK);
@@ -44,7 +15,6 @@ MainScreen::MainScreen()
 
 void MainScreen::Update()
 {
-    m_CubeInstances.Update();
     UpdateCamera(&m_Camera, CAMERA_FREE);
 }
 
@@ -55,14 +25,21 @@ void MainScreen::Draw()
 
     BeginMode3D(m_Camera);
         DrawGrid(10, 1.0f);
-        m_CubeInstances.Draw();
-        m_SphereInstances.Draw();
+
+        m_Cube.CastToInstances().Draw();
+        m_Sphere.CastToInstances().Draw();
+
         DrawGrid(c_GridSlices, c_GridSpacing);
     EndMode3D();
 
 #if defined(DEBUG)
     DrawFPS(10, 10);
 #endif
+}
+
+std::unique_ptr<Screen> MainScreen::Create()
+{
+    return std::make_unique<MainScreen>();
 }
 
 MainScreen::~MainScreen()

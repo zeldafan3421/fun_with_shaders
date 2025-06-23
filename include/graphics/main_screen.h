@@ -2,16 +2,14 @@
 
 #include "raylib.h"
 #include "raymath.h"
+
+#include "graphics/objects/instance_object.h"
+#include "utilities/random.h"
 #include "interfaces/screen.h"
 #include "null_screen.h"
-#include "instances.h"
-#include <vector>
-#include "../resource_dir.h"
+
 #include <functional>
 #include <string>
-
-#include "graphics/objects/object3D.h"
-#include "utilities/random.h"
 
 constexpr float c_CameraDist = 4.0f;
 constexpr Vector3 c_CameraUp = Vector3{0.0f, 1.0f, 0.0f};
@@ -37,11 +35,6 @@ static constexpr Camera GetCameraDefaultSettings()
     return response;
 }
 
-static auto GenDefaultCube = [](){
-    constexpr float c_SideLength = 1.0f;
-    return GenMeshCube(c_SideLength, c_SideLength, c_SideLength);
-};
-
 class MainScreen : public Screen
 {
 public:
@@ -50,16 +43,15 @@ public:
     virtual void Update();
     virtual void Draw();
 
+    static std::unique_ptr<Screen> Create();
+
     ~MainScreen();
 
 private:
     Camera m_Camera;
     
-    Object3D m_Cube;
-    Object3D m_Sphere;
-
-    Instances m_CubeInstances;
-    Instances m_SphereInstances;
+    InstanceObject m_Cube;
+    InstanceObject m_Sphere;
 
     constexpr static int c_InstanceCount = 1000;
 };
