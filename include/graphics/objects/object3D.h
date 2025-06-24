@@ -32,7 +32,9 @@ public:
         m_Model.materials[0].shader = _shader;
     }
 
-    virtual InstanceData GetInstanceData();
+    virtual Mesh GetMesh() const override;
+    
+    virtual Material GetMaterial() const override;
 
     ~Object3D();
 private:

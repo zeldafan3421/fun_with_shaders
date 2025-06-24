@@ -23,7 +23,7 @@ Instances::Instances(int _count, Instanciable& _instanciable, Builder<Matrix>& b
 
 bool Instances::Contains(Model _model)
 {
-    return _model.meshes[0].vaoId == m_Target->GetInstanceData()._mesh.vaoId;
+    return _model.meshes[0].vaoId == m_Target->GetMesh().vaoId;
 }
 
 void Instances::Update()
@@ -40,7 +40,7 @@ void Instances::Draw()
     }
         
     DrawMeshInstanced(
-        m_Target->GetInstanceData()._mesh, m_Target->GetInstanceData()._material, m_Transforms.data(), m_Count
+        m_Target->GetMesh(), m_Target->GetMaterial(), m_Transforms.data(), m_Count
     );
 }
 

@@ -15,3 +15,5 @@ public:
 
     virtual bool IsValid() const { return true; }
 };
+
+

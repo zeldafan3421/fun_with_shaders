@@ -39,9 +39,14 @@ void Object3D::Draw(const Matrix& _transform)
     DrawModel(self, Vector3Zeros, 1.0f, WHITE);
 }
 
-InstanceData Object3D::GetInstanceData()
+Mesh Object3D::GetMesh() const
 {
-    return InstanceData{m_Model.meshes[0], m_Model.materials[0]};
+    return m_Model.meshes[0];
+}
+
+Material Object3D::GetMaterial() const
+{
+    return m_Model.materials[0];
 }
 
 Object3D::~Object3D()

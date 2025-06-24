@@ -2,7 +2,12 @@
 
 MainScreen::MainScreen()
     : Screen(NullScreen::Create()),
-    m_Camera(GetCameraDefaultSettings()),
+    m_Camera(
+        CameraBuilder()
+            .SetPosition({0.0f, 2.0f, 5.0f})
+            .SetTarget({0.0f, 0.0f, 0.0f})
+            .Build()
+    ),
     m_Cube(InstanceObject::CubeObject(c_InstanceCount)),
     m_Sphere(InstanceObject::SphereObject(c_InstanceCount))
 {  

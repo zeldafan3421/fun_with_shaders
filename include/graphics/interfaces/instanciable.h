@@ -2,15 +2,10 @@
 
 #include "raylib.h"
 
-struct InstanceData
-{
-    Mesh _mesh;
-    Material _material;
-};
-
 class Instanciable
 {
 public:
-    virtual InstanceData GetInstanceData() = 0;
+    virtual Mesh GetMesh() const = 0;
+    virtual Material GetMaterial() const = 0;
     virtual void SetMaterialShader(Shader _shader) = 0;
 };
